@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream-50: #FFFDD0;
+  --color-cream-100: #fdf8c1;
+  --color-cream-200: #f7f3a6;
+  --color-cream-300: #f3deb6;
+  --color-maroon-500: #4e1724;
+  --color-maroon-600: #682031;
+  --color-maroon-700: #5b1b2a;
+  --color-maroon-800: #4e1724;
+  --color-maroon-900: #4e1724;
+  --color-gold-400: #d4af37;
+  --color-gold-500: #aa8c2c;
+  --color-gold-600: #806921;
+
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-cream-50 text-maroon-800 font-sans antialiased selection:bg-gold-400 selection:text-white;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+/* Glassmorphism utilities */
+@layer utilities {
+  .glass {
+    @apply bg-cream-50/90 backdrop-blur-md border border-cream-200/50 shadow-lg;
+  }
+  
+  .glass-dark {
+    @apply bg-maroon-900/80 backdrop-blur-md border border-maroon-700/50 shadow-xl text-cream-50;
+  }
+  
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-gold-600 via-gold-400 to-gold-600 bg-clip-text text-transparent;
+  }
+}
