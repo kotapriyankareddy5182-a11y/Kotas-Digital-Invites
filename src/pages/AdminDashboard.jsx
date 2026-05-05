@@ -82,32 +82,38 @@ const AdminDashboard = () => {
           setIsUploading(false);
         },
         async () => {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          
-          // Add details to Firestore
-          await addDoc(collection(db, "templates"), {
-            title,
-            category,
-            price,
-            externalLink,
-            videoLink,
-            features: features.split(',').map(f => f.trim()).filter(Boolean),
-            imageUrl: downloadURL,
-            createdAt: new Date()
-          });
+          try {
+            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+            
+            // Add details to Firestore
+            await addDoc(collection(db, "templates"), {
+              title,
+              category,
+              price,
+              externalLink,
+              videoLink,
+              features: features.split(',').map(f => f.trim()).filter(Boolean),
+              imageUrl: downloadURL,
+              createdAt: new Date()
+            });
 
-          // Reset form
-          setTitle("");
-          setCategory("Wedding");
-          setPrice("");
-          setExternalLink("");
-          setVideoLink("");
-          setFeatures("");
-          setFile(null);
-          setUploadProgress(0);
-          fetchTemplates();
-          alert("Template added successfully!");
-          setIsUploading(false);
+            // Reset form
+            setTitle("");
+            setCategory("Wedding");
+            setPrice("");
+            setExternalLink("");
+            setVideoLink("");
+            setFeatures("");
+            setFile(null);
+            setUploadProgress(0);
+            fetchTemplates();
+            alert("Template added successfully!");
+            setIsUploading(false);
+          } catch (err) {
+            console.error("Firestore error:", err);
+            alert("Failed to save template details. Check database permissions.");
+            setIsUploading(false);
+          }
         }
       );
     } catch (error) {
