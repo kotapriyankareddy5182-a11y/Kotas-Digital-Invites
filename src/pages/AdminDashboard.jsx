@@ -21,6 +21,7 @@ const AdminDashboard = () => {
   const [features, setFeatures] = useState("");
   const [file, setFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -61,6 +62,8 @@ const AdminDashboard = () => {
       alert("Please upload an image for the template.");
       return;
     }
+    
+    setIsUploading(true);
 
     try {
       // Upload image to Firebase Storage
@@ -76,6 +79,7 @@ const AdminDashboard = () => {
         (error) => {
           console.error("Upload error:", error);
           alert("Image upload failed");
+          setIsUploading(false);
         },
         async () => {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
@@ -103,11 +107,13 @@ const AdminDashboard = () => {
           setUploadProgress(0);
           fetchTemplates();
           alert("Template added successfully!");
+          setIsUploading(false);
         }
       );
     } catch (error) {
       console.error("Error adding template:", error);
       alert("Failed to add template");
+      setIsUploading(false);
     }
   };
 
@@ -177,7 +183,7 @@ const AdminDashboard = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Preview Image</label>
-                  <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0])} className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-cream-100 file:text-maroon-800 hover:file:bg-cream-200" />
+                  <input type="file" required accept="image/*" onChange={(e) => setFile(e.target.files[0])} className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-cream-100 file:text-maroon-800 hover:file:bg-cream-200" />
                 </div>
                 
                 {uploadProgress > 0 && uploadProgress < 100 && (
@@ -186,8 +192,8 @@ const AdminDashboard = () => {
                   </div>
                 )}
 
-                <button type="submit" className="w-full bg-maroon-800 text-white py-2 px-4 rounded-md hover:bg-gold-500 transition-colors font-medium mt-4">
-                  Upload Template
+                <button type="submit" disabled={isUploading} className={`w-full text-white py-2 px-4 rounded-md transition-colors font-medium mt-4 ${isUploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-maroon-800 hover:bg-gold-500'}`}>
+                  {isUploading ? 'Uploading...' : 'Upload Template'}
                 </button>
               </form>
             </div>

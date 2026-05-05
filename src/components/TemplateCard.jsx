@@ -45,15 +45,29 @@ const TemplateCard = ({ template, isDark }) => {
       
       <div className={`p-6 relative z-10 ${isDark ? 'bg-maroon-900' : 'bg-cream-50'}`}>
         <h3 className={`font-serif text-2xl font-bold mb-2 transition-colors duration-300 ${isDark ? 'text-cream-50' : 'text-maroon-900'}`}>{title}</h3>
-        <div className="flex items-center justify-between mt-6">
-          <span className={`text-xl font-bold px-4 py-1.5 rounded-lg border ${isDark ? 'text-maroon-900 bg-cream-50 border-cream-200' : 'text-cream-50 bg-maroon-900 border-maroon-800'}`}>{price ? `₹${price}` : 'Premium'}</span>
-          <button 
-            onClick={handleBuyNow}
-            className={`px-6 py-2.5 font-bold rounded-full transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1 transform active:scale-95 flex items-center gap-2 border ${isDark ? 'bg-cream-50 text-maroon-900 border-cream-200 hover:bg-cream-100' : 'bg-maroon-900 text-cream-50 border-maroon-800 hover:bg-maroon-800'}`}
-          >
-            <span>Buy Now</span>
-            <span className="text-lg">✨</span>
-          </button>
+        <div className="flex flex-col gap-4 mt-6">
+          <div className="flex items-center justify-between">
+            <span className={`text-xl font-bold px-4 py-1.5 rounded-lg border ${isDark ? 'text-maroon-900 bg-cream-50 border-cream-200' : 'text-cream-50 bg-maroon-900 border-maroon-800'}`}>{price ? `₹${price}` : 'Premium'}</span>
+          </div>
+          <div className="flex items-center gap-3 w-full">
+            {template.externalLink && (
+              <a 
+                href={template.externalLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`flex-1 text-center px-4 py-2.5 font-bold rounded-full transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1 transform active:scale-95 border ${isDark ? 'bg-transparent text-cream-50 border-cream-50 hover:bg-cream-50/10' : 'bg-transparent text-maroon-900 border-maroon-900 hover:bg-maroon-900/10'}`}
+              >
+                Demo
+              </a>
+            )}
+            <button 
+              onClick={handleBuyNow}
+              className={`flex-1 px-4 py-2.5 font-bold rounded-full transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1 transform active:scale-95 flex items-center justify-center gap-2 border ${isDark ? 'bg-cream-50 text-maroon-900 border-cream-200 hover:bg-cream-100' : 'bg-maroon-900 text-cream-50 border-maroon-800 hover:bg-maroon-800'}`}
+            >
+              <span>Buy</span>
+              <span className="text-lg">✨</span>
+            </button>
+          </div>
         </div>
       </div>
     </motion.div>
