@@ -16,6 +16,7 @@
 
   --font-serif: "Playfair Display", serif;
   --font-sans: "Inter", system-ui, sans-serif;
+  --font-cursive: "Great Vibes", cursive;
 }
 
 @layer base {

@@ -13,12 +13,15 @@ const Home = () => {
   useEffect(() => {
     const fetchTemplates = async () => {
       try {
-        const q = query(collection(db, "templates"), limit(3));
+        const q = query(collection(db, "templates"), limit(6));
         const querySnapshot = await getDocs(q);
         const templatesData = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
         }));
+
+        console.log("DEBUG_TEMPLATES:", JSON.stringify(templatesData.map(t => t.title)));
+
         setTemplates(templatesData);
       } catch (error) {
         console.error("Error fetching templates:", error);
@@ -32,87 +35,104 @@ const Home = () => {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative h-[90vh] flex items-center justify-center overflow-hidden bg-maroon-900">
-        {/* Background Golden Temple Theme */}
-        <div 
-          className="absolute inset-0 z-0 bg-maroon-900 overflow-hidden"
-          style={{
-            backgroundImage: 'url("/majestic-temple.png")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center top',
-          }}
-        >
-          {/* Smooth Gradient Overlay: Shows the complete image at the top and blends into maroon at the bottom */}
-          <div className="absolute inset-0 bg-gradient-to-t from-maroon-900 via-maroon-900/40 to-black/20"></div>
-          
-          {/* Subtle Golden Texture Overlay */}
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMSIgZmlsbD0iI2Q0YWYzNyIgZmlsbC1vcGFjaXR5PSIwLjE1Ii8+PC9zdmc+')] opacity-20 mix-blend-overlay"></div>
-          
-          {/* Floating Gold Particles (UI/UX Pro Max) */}
-          {[...Array(25)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1.5 h-1.5 bg-gold-400 rounded-full pointer-events-none"
-              style={{
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                filter: 'blur(1px)',
-              }}
-              animate={{
-                y: [0, -100, -200],
-                x: [0, Math.random() * 50 - 25, Math.random() * 50 - 25],
-                opacity: [0, Math.random() * 0.8 + 0.2, 0],
-                scale: [0, Math.random() + 0.5, 0]
-              }}
-              transition={{
-                duration: Math.random() * 10 + 10,
-                repeat: Infinity,
-                ease: "linear",
-                delay: Math.random() * 10
-              }}
-            />
-          ))}
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-[#FAF6F0] pt-24 pb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-center">
+            
+            {/* Left Content */}
+            <div className="flex flex-col items-center lg:items-start text-center lg:text-left order-2 lg:order-1">
+              <motion.div 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                className="flex items-center gap-4 mb-6"
+              >
+                <div className="hidden lg:block h-[1px] w-12 bg-maroon-800/30"></div>
+                <span className="text-xs md:text-sm tracking-[0.25em] text-maroon-800/70 uppercase font-semibold">Digital Wedding Invites</span>
+                <div className="hidden lg:block h-[1px] w-12 bg-transparent"></div> {/* Spacer for balance if needed */}
+              </motion.div>
 
-          {/* Bottom fade out overlay to blend with the rest of the page */}
-          <div className="absolute inset-0 bg-gradient-to-b from-maroon-900/10 via-transparent to-cream-50 pointer-events-none"></div>
-        </div>
-        
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-4xl md:text-6xl font-serif font-bold text-cream-50 mb-6 leading-tight drop-shadow-2xl"
-          >
-            Where Your Story Becomes a <br/>
-            <span className="text-gradient-gold relative inline-block">
-              Beautiful Invitation
-              <motion.span 
-                className="absolute inset-0 bg-gold-400/40 blur-[30px] z-[-1] pointer-events-none"
-                animate={{ opacity: [0.3, 0.7, 0.3], scale: [0.9, 1.1, 0.9] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              ></motion.span>
-            </span>
-          </motion.h1>
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-lg md:text-xl text-cream-200 mb-10 max-w-3xl mx-auto space-y-4"
-          >
-            <p className="font-semibold text-gold-300 drop-shadow-md">Celebrate your special moments with elegant, digital invites designed to impress.</p>
-            <p className="drop-shadow-md">From the first glance to the final celebration, create invitations that truly reflect your journey together.</p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
-          >
-            <Link to="/templates" className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 bg-gold-500 text-maroon-900 font-bold text-lg rounded-full shadow-lg hover:bg-gold-400 hover:shadow-xl transition-all transform hover:-translate-y-1 gap-2">
-              <span>✨</span> View Collections
-            </Link>
-          </motion.div>
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-[2.75rem] sm:text-5xl md:text-6xl lg:text-[4.5rem] font-serif text-[#3A2D28] leading-[1.1] mb-6"
+              >
+                Where Your <br className="hidden sm:block" />
+                Story Becomes a <br className="hidden sm:block" />
+                <span className="italic text-[#682E36] font-normal">Beautiful</span> <br className="hidden sm:block" />
+                <span className="italic text-[#682E36] font-normal">Invitation</span>
+              </motion.h1>
+
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="text-[#6C5D55] text-base md:text-lg mb-10 max-w-lg leading-relaxed font-light"
+              >
+                Celebrate your special moments with elegant, digital invites designed to impress. From the first glance to the final celebration, create invitations that truly reflect your journey together.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+              >
+                <Link to="/templates" className="inline-flex items-center justify-center px-8 py-4 bg-[#3E1624] text-[#FAF6F0] font-medium text-sm tracking-wider rounded-full shadow-xl hover:bg-[#2A0E18] transition-all transform hover:-translate-y-1 group">
+                  <span className="mr-2 text-gold-400">✨</span> VIEW COLLECTIONS 
+                  <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                </Link>
+              </motion.div>
+            </div>
+
+            {/* Right Image Content */}
+            <div className="relative order-1 lg:order-2 flex justify-center lg:justify-end px-4 sm:px-0">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1 }}
+                className="relative w-full max-w-sm lg:max-w-md mx-auto"
+              >
+                {/* Soft backdrop shape */}
+                <div className="absolute inset-0 bg-[#EFE3D5] rounded-[3rem] -rotate-2 scale-105 z-0 transition-transform duration-700 hover:rotate-0"></div>
+                
+                {/* Main Image */}
+                <div className="relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-[#FAF6F0] bg-[#FAF6F0]">
+                  <img src="/hero-gopuram.png" alt="Majestic Temple Background" className="w-full h-auto max-h-[600px] object-contain transition-transform duration-700 hover:scale-105" />
+                </div>
+
+                {/* Floating Badge 1 - Top Left */}
+                <motion.div 
+                  initial={{ opacity: 0, y: -20, x: -20 }}
+                  animate={{ opacity: 1, y: 0, x: 0 }}
+                  transition={{ delay: 0.8, type: "spring", stiffness: 100 }}
+                  className="absolute -top-4 -left-4 lg:-top-8 lg:-left-12 bg-[#FAF6F0] px-5 py-3 rounded-2xl shadow-xl z-20 border border-[#EADAC5] flex flex-col items-center backdrop-blur-sm bg-white/90"
+                >
+                  <span className="text-[#682E36] font-serif italic text-lg md:text-xl flex items-center gap-1.5">
+                    <span className="text-[10px]">✦</span> Premium
+                  </span>
+                  <span className="text-xs text-[#6C5D55] font-medium">Crafted with love</span>
+                </motion.div>
+
+                {/* Floating Badge 2 - Bottom Right */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20, x: 20 }}
+                  animate={{ opacity: 1, y: 0, x: 0 }}
+                  transition={{ delay: 1, type: "spring", stiffness: 100 }}
+                  className="absolute -bottom-6 -right-2 lg:-bottom-8 lg:-right-8 bg-[#111] w-20 h-20 md:w-24 md:h-24 rounded-2xl md:rounded-[1.5rem] shadow-2xl z-20 flex items-center justify-center p-3 md:p-4 border-[3px] border-[#FAF6F0]"
+                >
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    <div className="absolute w-8 h-12 md:w-10 md:h-14 bg-gradient-to-br from-[#A87B4C] to-[#E5C77A] rounded-sm transform -rotate-12 shadow-md"></div>
+                    <div className="absolute w-8 h-12 md:w-10 md:h-14 bg-gradient-to-br from-[#E5C77A] to-[#F9EAB8] rounded-sm transform rotate-12 shadow-md"></div>
+                    <div className="absolute w-8 h-12 md:w-10 md:h-14 bg-gradient-to-br from-[#5C1A24] to-[#8C2A3A] rounded-sm transform z-10 shadow-lg border border-gold-400/40 flex items-center justify-center bg-opacity-90">
+                       <span className="text-gold-400 text-xs md:text-sm drop-shadow-md">✨</span>
+                    </div>
+                  </div>
+                </motion.div>
+              </motion.div>
+            </div>
+
+          </div>
         </div>
       </section>
 

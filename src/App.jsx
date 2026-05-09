@@ -6,6 +6,7 @@ import Templates from "./pages/Templates";
 import Preview from "./pages/Preview";
 import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
+import WhatsAppButton from "./components/WhatsAppButton";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           </Routes>
         </main>
         <Footer />
+        <WhatsAppButton />
       </div>
     </Router>
   );
