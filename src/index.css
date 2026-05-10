@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-  --color-cream-50: #FFFDD0;
-  --color-cream-100: #fdf8c1;
-  --color-cream-200: #f7f3a6;
-  --color-cream-300: #f3deb6;
+  --color-cream-50: #FDFBD4;
+  --color-cream-100: #fdfad4;
+  --color-cream-200: #fcf6c5;
+  --color-cream-300: #fbf1b3;
   --color-maroon-500: #4e1724;
   --color-maroon-600: #682031;
   --color-maroon-700: #5b1b2a;

@@ -38,7 +38,7 @@ const Templates = () => {
     <div className="pt-8 pb-20 bg-cream-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold text-maroon-800 mb-4">Our Premium Collection</h1>
+          <h1 className="text-4xl md:text-5xl font-serif font-bold text-maroon-800 mb-4">Our Classic Collection</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Discover the perfect design for your special day. Each template is crafted with love and elegance.
           </p>

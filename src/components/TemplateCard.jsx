@@ -13,8 +13,8 @@ const TemplateCard = ({ template, isDark }) => {
   let isCursivePremium = false;
   let displayTitle = title;
   
-  if (title === "Premium wedding templete" || title.toLowerCase().includes('signature of live')) {
-    displayTitle = "Premium";
+  if (title === "Premium wedding templete" || title === "Classic Wedding Template" || title.toLowerCase().includes('signature of live')) {
+    displayTitle = "Classic";
   } else if (title === "Divine Ganesha Aesthetic Template" || title.toLowerCase().includes('signature of love')) {
     isCursivePremium = true;
     displayTitle = "Signature of Love";
@@ -66,9 +66,14 @@ const TemplateCard = ({ template, isDark }) => {
             Premium
           </p>
         )}
+        {displayTitle === "Classic" && (
+          <p className={`text-sm italic font-medium mt-[-4px] mb-2 ${isDark ? 'text-gold-400' : 'text-maroon-700'}`}>
+            Classic
+          </p>
+        )}
         <div className="flex flex-col gap-4 mt-auto pt-4">
           <div className="flex items-center justify-between">
-            <span className={`text-xl font-bold px-4 py-1.5 rounded-lg border ${isDark ? 'text-maroon-900 bg-cream-50 border-cream-200' : 'text-cream-50 bg-maroon-900 border-maroon-800'}`}>{price ? `₹${price}` : 'Premium'}</span>
+            <span className={`text-xl font-bold px-4 py-1.5 rounded-lg border ${isDark ? 'text-maroon-900 bg-cream-50 border-cream-200' : 'text-cream-50 bg-maroon-900 border-maroon-800'}`}>{price ? `₹${price}` : (displayTitle === 'Classic' ? 'Classic' : 'Premium')}</span>
           </div>
           <div className="flex items-center gap-3 w-full">
             {template.externalLink && (
