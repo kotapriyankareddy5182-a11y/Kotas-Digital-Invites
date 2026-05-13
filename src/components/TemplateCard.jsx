@@ -50,6 +50,8 @@ const TemplateCard = ({ template, isDark }) => {
         <div className="absolute inset-0 bg-maroon-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 backdrop-blur-[2px]">
           <Link 
             to={`/preview/${id}`}
+            target="_blank"
+            rel="noopener noreferrer"
             className="px-8 py-3 bg-white text-maroon-800 font-bold rounded-full transform translate-y-8 group-hover:translate-y-0 transition-all duration-500 shadow-xl hover:bg-cream-100 hover:scale-105"
           >
             Preview Design
@@ -76,15 +78,24 @@ const TemplateCard = ({ template, isDark }) => {
             <span className={`text-xl font-bold px-4 py-1.5 rounded-lg border ${isDark ? 'text-maroon-900 bg-cream-50 border-cream-200' : 'text-cream-50 bg-maroon-900 border-maroon-800'}`}>{price ? `₹${price}` : (displayTitle === 'Classic' ? 'Classic' : 'Premium')}</span>
           </div>
           <div className="flex items-center gap-3 w-full">
-            {template.externalLink && (
+            {template.externalLink || template.videoLink ? (
               <a 
-                href={template.externalLink}
+                href={template.externalLink || template.videoLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`flex-1 text-center px-4 py-2.5 font-bold rounded-full transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1 transform active:scale-95 border ${isDark ? 'bg-transparent text-cream-50 border-cream-50 hover:bg-cream-50/10' : 'bg-transparent text-maroon-900 border-maroon-900 hover:bg-maroon-900/10'}`}
               >
                 Demo
               </a>
+            ) : (
+              <Link 
+                to={`/preview/${id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`flex-1 text-center px-4 py-2.5 font-bold rounded-full transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1 transform active:scale-95 border ${isDark ? 'bg-transparent text-cream-50 border-cream-50 hover:bg-cream-50/10' : 'bg-transparent text-maroon-900 border-maroon-900 hover:bg-maroon-900/10'}`}
+              >
+                Demo
+              </Link>
             )}
             <button 
               onClick={handleBuyNow}

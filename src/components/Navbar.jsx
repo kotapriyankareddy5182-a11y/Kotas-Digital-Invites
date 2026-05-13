@@ -48,7 +48,7 @@ const Navbar = () => {
           <div className="flex items-center relative z-[110]">
             <Link to="/" className="flex-shrink-0 flex items-center space-x-4 group">
               <div className="relative">
-                <img src="/logo.jpg" alt="Logo" className="h-12 w-12 rounded-full shadow-md object-cover border-2 border-[#3A2D28]/30 group-hover:border-[#3A2D28] transition-colors duration-300" onError={(e) => e.target.style.display='none'} />
+                <img src="/logo.jpg" alt="Logo" className="h-14 w-14 rounded-lg shadow-md object-contain border border-[#3A2D28]/20 group-hover:border-[#3A2D28] transition-colors duration-300" onError={(e) => e.target.style.display='none'} />
               </div>
               <div className="relative">
                 <span className={`font-serif italic text-xl md:text-[1.35rem] tracking-wide transition-all duration-300 text-[#3A2D28]`}>

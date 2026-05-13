@@ -7,7 +7,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <div className="flex items-center space-x-3 mb-6">
-              <img src="/logo.jpg" alt="Kotas Digital Invites Logo" className="h-16 w-auto rounded-full shadow-lg object-cover" onError={(e) => e.target.style.display='none'} />
+              <img src="/logo.jpg" alt="Kotas Digital Invites Logo" className="h-16 w-16 rounded-lg shadow-lg object-contain" onError={(e) => e.target.style.display='none'} />
               <div className="relative">
                 <span className="absolute -inset-1 bg-gold-500/20 blur rounded-lg"></span>
                 <span className="relative font-['Great_Vibes'] text-3xl font-bold bg-gradient-to-r from-gold-400 to-cream-100 text-transparent bg-clip-text drop-shadow-sm">Kotas Digital Invites</span>
