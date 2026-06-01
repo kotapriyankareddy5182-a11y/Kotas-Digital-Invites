@@ -19,8 +19,7 @@ const AdminDashboard = () => {
   const [externalLink, setExternalLink] = useState("");
   const [videoLink, setVideoLink] = useState("");
   const [features, setFeatures] = useState("");
-  const [file, setFile] = useState(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [imageUrlInput, setImageUrlInput] = useState("");
   const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
@@ -58,67 +57,40 @@ const AdminDashboard = () => {
 
   const handleAddTemplate = async (e) => {
     e.preventDefault();
-    if (!file) {
-      alert("Please upload an image for the template.");
+    if (!imageUrlInput) {
+      alert("Please provide an image URL for the template.");
       return;
     }
     
     setIsUploading(true);
 
     try {
-      // Upload image to Firebase Storage
-      const storageRef = ref(storage, `templates/${Date.now()}_${file.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, file);
+      // Add details to Firestore directly
+      await addDoc(collection(db, "templates"), {
+        title,
+        category,
+        price,
+        externalLink,
+        videoLink,
+        features: features.split(',').map(f => f.trim()).filter(Boolean),
+        imageUrl: imageUrlInput,
+        createdAt: new Date()
+      });
 
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          setUploadProgress(progress);
-        },
-        (error) => {
-          console.error("Upload error:", error);
-          alert("Image upload failed");
-          setIsUploading(false);
-        },
-        async () => {
-          try {
-            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-            
-            // Add details to Firestore
-            await addDoc(collection(db, "templates"), {
-              title,
-              category,
-              price,
-              externalLink,
-              videoLink,
-              features: features.split(',').map(f => f.trim()).filter(Boolean),
-              imageUrl: downloadURL,
-              createdAt: new Date()
-            });
-
-            // Reset form
-            setTitle("");
-            setCategory("Wedding");
-            setPrice("");
-            setExternalLink("");
-            setVideoLink("");
-            setFeatures("");
-            setFile(null);
-            setUploadProgress(0);
-            fetchTemplates();
-            alert("Template added successfully!");
-            setIsUploading(false);
-          } catch (err) {
-            console.error("Firestore error:", err);
-            alert("Failed to save template details. Check database permissions.");
-            setIsUploading(false);
-          }
-        }
-      );
-    } catch (error) {
-      console.error("Error adding template:", error);
-      alert("Failed to add template");
+      // Reset form
+      setTitle("");
+      setCategory("Wedding");
+      setPrice("");
+      setExternalLink("");
+      setVideoLink("");
+      setFeatures("");
+      setImageUrlInput("");
+      fetchTemplates();
+      alert("Template added successfully!");
+      setIsUploading(false);
+    } catch (err) {
+      console.error("Firestore error:", err);
+      alert("Failed to save template details. Check database permissions.");
       setIsUploading(false);
     }
   };
@@ -188,15 +160,10 @@ const AdminDashboard = () => {
                   <input type="text" placeholder="Background Music, RSVP Form, Maps..." value={features} onChange={(e) => setFeatures(e.target.value)} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-gold-500 focus:border-gold-500" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Preview Image</label>
-                  <input type="file" required accept="image/*" onChange={(e) => setFile(e.target.files[0])} className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-cream-100 file:text-maroon-800 hover:file:bg-cream-200" />
+                  <label className="block text-sm font-medium text-gray-700">Preview Image URL</label>
+                  <input type="url" required placeholder="https://example.com/image.jpg" value={imageUrlInput} onChange={(e) => setImageUrlInput(e.target.value)} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-gold-500 focus:border-gold-500" />
+                  <p className="mt-1 text-xs text-gray-500">Since Firebase Storage is unavailable on the free plan, please paste a direct image URL (e.g., from Imgur, Postimages, or Google Drive) or a local path.</p>
                 </div>
-                
-                {uploadProgress > 0 && uploadProgress < 100 && (
-                  <div className="w-full bg-gray-200 rounded-full h-2.5">
-                    <div className="bg-gold-500 h-2.5 rounded-full" style={{ width: `${uploadProgress}%` }}></div>
-                  </div>
-                )}
 
                 <button type="submit" disabled={isUploading} className={`w-full text-white py-2 px-4 rounded-md transition-colors font-medium mt-4 ${isUploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-maroon-800 hover:bg-gold-500'}`}>
                   {isUploading ? 'Uploading...' : 'Upload Template'}
